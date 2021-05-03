@@ -1,0 +1,59 @@
+{
+  "name": "sc",
+  "displayName": "SC",
+  "description": "SC Language Support",
+  "version": "0.0.1",
+  "publisher": "cszatmary",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cszatmary/vscode-sc"
+  },
+  "bugs": {
+    "url": "https://github.com/cszatmary/vscode-sc/issues"
+  },
+  "engines": {
+    "vscode": "^1.55.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "sc",
+        "aliases": [
+          "SC",
+          "sc"
+        ],
+        "extensions": [
+          ".sc"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "sc",
+        "scopeName": "source.sc",
+        "path": "./syntaxes/sc.tmLanguage.json"
+      },
+      {
+        "scopeName": "markdown.sc.codeblock",
+        "path": "./syntaxes/markdownCodeblock.tmLanguage.json",
+        "injectTo": [
+          "text.html.markdown"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.sc": "sc"
+        }
+      }
+    ],
+    "configurationDefaults": {
+      "[sc]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2
+      }
+    }
+  }
+}

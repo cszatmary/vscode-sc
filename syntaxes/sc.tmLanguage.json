@@ -1,0 +1,289 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "SC",
+  "scopeName": "source.sc",
+  "patterns": [
+    {
+      "include": "#comment"
+    },
+    {
+      "include": "#value"
+    }
+  ],
+  "repository": {
+    "comment": {
+      "patterns": [
+        {
+          "begin": "/\\*",
+          "captures": {
+            "0": {
+              "name": "punctuation.definition.comment.sc"
+            }
+          },
+          "end": "\\*/",
+          "name": "comment.block.sc"
+        },
+        {
+          "begin": "//",
+          "captures": {
+            "0": {
+              "name": "punctuation.definition.comment.sc"
+            }
+          },
+          "end": "$",
+          "name": "comment.line.double-slash.sc"
+        }
+      ]
+    },
+    "value": {
+      "patterns": [
+        {
+          "include": "#comment"
+        },
+        {
+          "include": "#constant"
+        },
+        {
+          "include": "#dictionary"
+        },
+        {
+          "include": "#list"
+        },
+        {
+          "include": "#number"
+        },
+        {
+          "include": "#string"
+        },
+        {
+          "include": "#variable"
+        }
+      ]
+    },
+    "constant": {
+      "match": "\\b(?:true|false|null)\\b",
+      "name": "constant.language.sc"
+    },
+    "dictionary": {
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.dictionary.begin.sc"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.dictionary.end.sc"
+        }
+      },
+      "name": "meta.structure.dictionary.sc",
+      "patterns": [
+        {
+          "include": "#dictionary-key"
+        },
+        {
+          "include": "#comment"
+        },
+        {
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.dictionary.key-value.sc"
+            }
+          },
+          "end": "(,)|(?=\\})|(\\n)",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.separator.dictionary.pair.sc"
+            }
+          },
+          "name": "meta.structure.dictionary.value.sc",
+          "patterns": [
+            {
+              "include": "#value"
+            },
+            {
+              "match": "[^\\s,]",
+              "name": "invalid.illegal.expected-dictionary-separator.sc"
+            }
+          ]
+        },
+        {
+          "match": "[^\\s\\}]",
+          "name": "invalid.illegal.expected-dictionary-separator.sc"
+        }
+      ]
+    },
+    "dictionary-key": {
+      "name": "support.type.property-name.sc",
+      "patterns": [
+        {
+          "include": "#identifier"
+        },
+        {
+          "begin": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.support.type.property-name.begin.sc"
+            }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.support.type.property-name.end.sc"
+            }
+          },
+          "name": "string.json support.type.property-name.sc",
+          "patterns": [
+            {
+              "include": "#string-content"
+            }
+          ]
+        },
+        {
+          "begin": "`",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.support.type.property-name.begin.sc"
+            }
+          },
+          "end": "`",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.support.type.property-name.end.sc"
+            }
+          },
+          "name": "support.type.property-name.sc"
+        }
+      ]
+    },
+    "identifier": {
+      "name": "support.type.property-name.sc",
+      "match": "[_$[:alpha:]][_$[:alnum:]]*"
+    },
+    "list": {
+      "begin": "\\[",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.list.begin.sc"
+        }
+      },
+      "end": "\\]",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.list.end.sc"
+        }
+      },
+      "name": "meta.structure.list.sc",
+      "patterns": [
+        {
+          "include": "#value"
+        },
+        {
+          "match": "(,)|(\\n)",
+          "name": "punctuation.separator.list.sc"
+        },
+        {
+          "match": "[^\\s\\]]",
+          "name": "invalid.illegal.expected-array-separator.sc"
+        }
+      ]
+    },
+    "number": {
+      "match": "-?(?:0|[1-9]\\d*)(?:(?:\\.\\d+)?(?:[eE][+-]?\\d+)?)?",
+      "name": "constant.numeric.sc"
+    },
+    "string": {
+      "patterns": [
+        {
+          "include": "#double-string"
+        },
+        {
+          "include": "#raw-string"
+        }
+      ]
+    },
+    "double-string": {
+      "begin": "\"",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.double.begin.sc"
+        }
+      },
+      "end": "\"",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.double.end.sc"
+        }
+      },
+      "name": "string.quoted.double.sc",
+      "patterns": [
+        {
+          "include": "#string-content"
+        },
+        {
+          "include": "#variable"
+        }
+      ]
+    },
+    "string-content": {
+      "patterns": [
+        {
+          "name": "constant.character.escape.sc",
+          "match": "\\\\(?:x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|[bfnrt\\\\\"]|\\$\\{)"
+        },
+        {
+          "name": "invalid.illegal.unrecognized-string-escape.sc",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "raw-string": {
+      "begin": "`",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.raw.begin.sc"
+        }
+      },
+      "end": "`",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.raw.end.sc"
+        }
+      },
+      "name": "string.quoted.raw.sc"
+    },
+    "variable": {
+      "begin": "\\$\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.variable.start.sc"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.variable.end.sc"
+        }
+      },
+      "name": "variable.other.constant.sc",
+      "patterns": [
+        {
+          "match": "([_$[:alpha:]][_$[:alnum:]]*)(?:(\\.)([_$[:alpha:]][_$[:alnum:]]*))*",
+          "captures": {
+            "1": {
+              "name": "variable.other.constant.sc"
+            },
+            "2": {
+              "name": "punctuation.accessor.sc"
+            },
+            "3": {
+              "name": "variable.other.property.sc"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
